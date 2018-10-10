@@ -1,0 +1,29 @@
+private void button1_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dosya = new OpenFileDialog();
+            dosya.Filter = "resimler|*.bmp|All Files|*.*";
+            if (dosya.ShowDialog() != System.Windows.Forms.DialogResult.OK)
+            {
+                return;
+            }
+            pictureBox1.ImageLocation = dosya.FileName;
+        }
+rivate void button2_Click(object sender, EventArgs e)
+        {
+            Image img = pictureBox1.Image;
+            Bitmap bmpInverted = new Bitmap(img.Width, img.Height);
+            ImageAttributes TC = new ImageAttributes();
+            ColorMatrix resim = new ColorMatrix(new float[][]
+                {
+                new float[] {0.278f, 0.278f, 0.278f, 0, 0},
+                new float[] {0.562f, 0.562f, 0.562f, 0, 0},
+                new float[] {0.118f, 0.118f, 0.118f, 0, 0},
+                new float[] {     0,      0,      0, 1, 0},
+                new float[] {     0,      0,      0, 0, 0}
+                });
+            ia.SetColorMatrix(resim);
+            Graphics g = Graphics.FromImage(bmpInverted);
+            g.DrawImage(img, new Rectangle(0, 0, img.Width, img.Height), 0, 0, img.Width, img.Height, GraphicsUnit.Pixel, TC);
+            g.Dispose();
+            pictureBox1.Image = bmpInverted;
+        }
